@@ -1,0 +1,23 @@
+package test;
+
+import config.BrowserType;
+import config.WebDriverFactory;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.WebDriver;
+
+public class BaseTest {
+   public static WebDriver driver;
+
+    @BeforeAll
+    static void beforeAll() {
+        driver = WebDriverFactory.CreateDriver(BrowserType.CRHOME);
+        driver.get("https://www.qualitystream-practice.com/");
+    }
+
+    @AfterAll
+    static void afterAll() {
+        driver.quit();
+    }
+}
