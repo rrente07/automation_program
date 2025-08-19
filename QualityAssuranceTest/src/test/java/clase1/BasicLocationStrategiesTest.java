@@ -30,7 +30,6 @@ By InputName_Locator = By.id("name");
     public void TestText(){
     By InputEmail_Locator = By.name("email");
     //guardando el elemento
-
         WebElement element = driver.findElement(InputEmail_Locator);
         Utility.printElementInfo("Input Email", element);
 
