@@ -10,14 +10,14 @@ public class AppointmentsPage extends BasePage {
         super(driver);
     }
 
-    By textAppointmentHeader_Locator = By.cssSelector("div.sqsrte-scaled-text-container.loaded h2");
-    By appointmentBookButton_Locator =By.cssSelector("div>button.btn.css-1edjh51");
-    By checkCodeBalanceLinkText_Locator = By.cssSelector(".css-19p0dx4[@href='Check Code Balance']");
-    By selectCalendarText_Locator = By.cssSelector(".css-14ff62y[@href='Select Calendar']");
-    By buttonCalendarArrowButton_Locator = By.className("button.css-7sub3h");
-    By appointmentText_Locator = By.cssSelector("div > h3 > a[href='Appointment']");
-    By anyAvailableText_Locator = By.cssSelector("div>p.css-roynbj.p");
-
+    By textAppointmentHeader_Locator = By.cssSelector("div.sqsrte-scaled-text-container h2");
+    By appointmentBookButton_Locator =By.xpath("(//li[contains(@class,'select-item select-item-box')]//button)[1]");
+    By checkCodeBalanceButton_Locator = By.cssSelector("footer button");
+    By selectCalendarText_Locator = By.xpath("//h2[text()='Select Calendar']");
+    By buttonCalendarArrowButton_Locator = By.cssSelector("//nav[@id='pylon-nav']//button");
+    By appointmentTextHeader_Locator = By.cssSelector("(//div[h3])[1]");
+    By anyAvailableText_Locator = By.cssSelector("(//div//p)[4]");
+    By joaquimText_Locator = By.cssSelector("(//div//p)[5]");
     //When I click on select Button, I need to check:
 
 

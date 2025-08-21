@@ -6,8 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 public class QSCreditCardsPage extends BasePage{
-//Input Password
 
+    //Locators
     By InputPassword_Locator = By.name("password");
     By diamond_Locator = By.xpath("//img[contains(@src,'QStream+Diamond+Credit+Card1.png')]");
     By goldenCC_Locator = By.xpath("//img[contains(@src, 'QStream+Golden+Credit+Card1.png')]");
@@ -21,14 +21,15 @@ public class QSCreditCardsPage extends BasePage{
     public QSCreditCardsPage(WebDriver driver){
         super(driver);
     }
-
+    //Input Password
     public void enterPassword(){
        waitforElementToBeClickable(InputPassword_Locator);
        if(IsDisplayed (InputPassword_Locator)){
         String password = "qa123";
         type(InputPassword_Locator, password);
             //we need to submit
-Submit(InputPassword_Locator);
+
+           Submit(InputPassword_Locator);
        }else
            System.out.println("Password input was not present");
     }

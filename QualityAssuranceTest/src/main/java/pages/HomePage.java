@@ -23,23 +23,16 @@ public class HomePage extends BasePage {
     By topsLink_Locator = By.xpath("//a[@href='/shop/tops']");
     By allLinks_Locator = By.xpath("//a[@href='/shop']");
 
-    public void ClickOnCoursePageLink(){
-    click(coursePageLink_Locator);
 
-}
-
-    public void ClickOnCreditCardsLink(){
-        click(qsCreditCardLink_Locator);
-    }
+    public void ClickOnCoursePageLink(){ click(coursePageLink_Locator);}
 
     public void ClickOnWebElementTestLink(){
         click(webElementTestLink_Locator);
     }
 
-
-public void ClickOnCreditCardsLink(){
-        click(qsCreditCardLink_Locator);
+     public void ClickOnCreditCardsLink(){click(qsCreditCardLink_Locator);
     }
+
 
     public boolean IsHeaderYtbIconDisplayed(){
        boolean isDisplayed = IsDisplayed(headerYoutube_Locator);
@@ -59,8 +52,6 @@ public boolean IsLogoPresent(){
         System.out.println("The button link is Displayed" + Footerlogo_IsPresent);
         return Footerlogo_IsPresent;
 }
-
-
 
 
 
