@@ -3,9 +3,9 @@ package data;
 public class Product {
  private int index;
  private String title;
- private String price;
+ private double price;
 
-    public Product(int index, String title, String price) {
+    public Product(int index, String title, double price) {
         this.index = index;
         this.title = title;
         this.price = price;
@@ -27,11 +27,11 @@ public class Product {
         this.title = title;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 }
