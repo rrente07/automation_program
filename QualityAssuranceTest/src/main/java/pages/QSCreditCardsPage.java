@@ -5,35 +5,37 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+// Page Object class for the QS Credit Cards page
 public class QSCreditCardsPage extends BasePage{
 
-    //Locators
+    // Locators for password input and credit card images
     By InputPassword_Locator = By.name("password");
     By diamond_Locator = By.xpath("//img[contains(@src,'QStream+Diamond+Credit+Card1.png')]");
     By goldenCC_Locator = By.xpath("//img[contains(@src, 'QStream+Golden+Credit+Card1.png')]");
     By platinumCC_Locator = By.xpath("//img[contains(@src, 'QStream+Platinum+Credit+Card1.png')]");
 
 
-    //Form locator
+    // Locators
     By selectCreditCardType_Locator = By.id("cardType");
     By creditCardDetailsLabel_Locator = By.id("cardDetails");
 
+    // Constructor initializes the page with WebDriver
     public QSCreditCardsPage(WebDriver driver){
         super(driver);
     }
-    //Input Password
+
+    // Enters password and submits the form if input is present
     public void enterPassword(){
        waitforElementToBeClickable(InputPassword_Locator);
        if(IsDisplayed (InputPassword_Locator)){
         String password = "qa123";
         type(InputPassword_Locator, password);
-            //we need to submit
-
+           // Submit the password input
            Submit(InputPassword_Locator);
        }else
            System.out.println("Password input was not present");
     }
-
+    // Checks if all credit card images are present on the page
     public boolean areCreditsCardsPresent(){
         boolean diamondCC = IsDisplayed(diamond_Locator);
         System.out.println("Is Diamond credit card present:" + diamondCC);
@@ -46,11 +48,11 @@ public class QSCreditCardsPage extends BasePage{
 
         return diamondCC && goldenCC && platinumCC;
     }
-
+    // Selects a credit card type from the dropdown by value
 public boolean selectCreditCardMethod(String creditCardType){
-      //We need to scroll to the select first
+    // Scroll to the select element
         scrollIntoView(selectCreditCardType_Locator);
-        //Finding select web element
+    // Find the select element and choose the option
         WebElement selectElement = findElement(selectCreditCardType_Locator);
         Select select = new Select(selectElement);
         //Selecting credit card by value
@@ -58,6 +60,7 @@ public boolean selectCreditCardMethod(String creditCardType){
     return false;
 }
 
+    // Gets the details text for the selected credit card
 public String getCreditCardsDetails(){
         String details = getText(creditCardDetailsLabel_Locator);
         System.out.println("Credit card details:" + details);
