@@ -145,6 +145,7 @@ public class BasePage {
 
     }
 
+
     /**
      * Waits for a web element found by locator to be clickable.
      *
@@ -218,7 +219,14 @@ public void scrollToTop(){
     js.executeScript("window.scrollTo(0,0");
 }
 
+    public void uploadFile(By locator, String filePath){
+        WebElement uploadElement = findElement(locator);
+        uploadElement.sendKeys(filePath);
+    }
 
-//Scroll to the bottom of the page
+
+
+
+
 
 }
