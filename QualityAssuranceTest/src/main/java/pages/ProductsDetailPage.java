@@ -4,53 +4,45 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import utils.Utility;
 
 public class ProductsDetailPage extends BasePage {
-
+    private static final Logger logger = LoggerFactory.getLogger(ProductsDetailPage.class);
     //Constructor
     public ProductsDetailPage(WebDriver driver) {
-        super(driver);
+        super();
     }
 
-    //Locators
-    By ProductDetailsTitleText_Locator = By.className("ProductItem-details-title");
-    By ProductsDetailsPriceText_Locator = By.className("product-price");
-    By ProductDetailsDescriptionTextTitleCode_Locator = By.xpath("pre>code");
-    By ProductDetailsDescriptionTextDescription_Locator = By.xpath("//pre/following-sibling::p");
-    By ProductDetailsDescriptionText_Locator = By.xpath("//pre//code[contains(. , 'DETAILS')]");
-    By ProductDetailsListText_Locator = By.xpath("//ul//p[@class = white-space:pre-wrap//li[1]]");
-    By ProductSizeSelector_Loccator = By.cssSelector("select[aria-label='Select Size']");
-    By ProductQuantityInput_Locator = By.cssSelector("input[aria-label='Quantity']");
-    By ProductAddtoCartBttn_Locator = By.className("sqs-add-to-cart-button-inner");
-    By ProductoImage_Locator = By.xpath("//div//img[@class = ('ProductItem-gallery-slides-item-image')]");
     //________________________________________________________________________________________________________
-    // Locator for the product title element
-    By productTitle_Locator = By.cssSelector("h1.ProductItem-details-title");
+    // Locator for the product element
+    By productTitle_Locator = By.cssSelector("h1.product-title");
     // Locator for the product price element
-    By productPrice_Locator = By.cssSelector("div.product-price");
+    By productPrice_Locator = By.className("product-price-value");
     // Locator for the size selection dropdown
-    By selectSize_Locator = By.cssSelector("select[aria-label='Select Size']");
+    //Modificado hoy 09-05-25
+    By selectSize_Locator = By.cssSelector("//select[.//option[normalize-space(.)='Select Size']");
     // Locator for the size selection dropdown
-    By inputQuantity_Locator = By.cssSelector("input[aria-label='Quantity']");
+    By inputQuantity_Locator = By.className("product-quantity-input");
     // Locator for the button of quantity input field
-    By addToCartBtn_Locator = By.cssSelector("div[role='button'][data-original-label='Add To Cart']");
+    By addToCartBtn_Locator = By.className("sqs-add-to-cart-button-inner");
     // Locator for the "Add To Cart" button
     By addingElementMessage_Locator = By.cssSelector("div.status-text");
-    //Locator for Cart quantity product
-    //By addingCartTextNumberSpan_Locator = By.xpath("(//span[@class='sqs-cart-quantity'])[2]");
+
+
     //Locator for Cart quantity product version 2:: I would like to verify is both locator are the same
-    By carQuantity_Locator = By.xpath("(//div[@class='showOnDesktop']//span[@class='sqs-cart-quantity'])[1]");
+    By cartQuantity_Locator = By.cssSelector("div[class='showOnDesktop'] span.sqs-cart-quantity");
     //Locator for pop up with the error
     By errorMessageSize_Locator = By.xpath("//div[normalize-space()='Please select size option.']");
-    By errorMessageQuantity_Locator = By.xpath("//div[normalize-space()='You must add a quantity greater than zero.']");
+    By errorMessageQuantity_Locator = By.cssSelector("div.message");
     By buttonCloseErrorMessage_Locator = By.xpath("//div[@role='button'][text()='Okay']");
     //________________________________________________________________________________________________________
 
     //Verify size error message is Present
     public boolean VerifySizeErrorMsgIsPresent(){
 boolean errorIsPresent = IsDisplayed(errorMessageSize_Locator);
-        System.out.println("Size error is Present:" + errorIsPresent);
+        logger.info("Size error is Present:" + errorIsPresent);
         //Closing the error message
         click(buttonCloseErrorMessage_Locator);
         return errorIsPresent;
@@ -58,7 +50,7 @@ boolean errorIsPresent = IsDisplayed(errorMessageSize_Locator);
 
     public boolean VerifyQuantityErrorMsgIsPresent(){
         boolean errorIsPresent = IsDisplayed(errorMessageQuantity_Locator);
-        System.out.println("Quantity error is Present:" + errorIsPresent);
+        logger.info("Quantity error is Present:" + errorIsPresent);
         //Closing the error message
         click(buttonCloseErrorMessage_Locator);
         return errorIsPresent;
@@ -95,7 +87,7 @@ boolean errorIsPresent = IsDisplayed(errorMessageSize_Locator);
 
     //Complete the method to adding to the cart
     public void clickAddToCart() {
-        ScrollIntoViewAndClick(addToCartBtn_Locator);
+        scrollIntoViewAndClick(addToCartBtn_Locator);
     }
 
     //Wait for massage to Disappear
@@ -104,16 +96,16 @@ boolean errorIsPresent = IsDisplayed(errorMessageSize_Locator);
     }
 
     public int getCarItemsQuantity() {
-        waitForElementToBePresent(carQuantity_Locator);
-        scrollIntoView(carQuantity_Locator);
-        int itmensQty = Integer.parseInt(getText(carQuantity_Locator));
+        waitForElementToBePresent(cartQuantity_Locator);
+        scrollIntoView(cartQuantity_Locator);
+        int itmensQty = Integer.parseInt(getText(cartQuantity_Locator));
         return itmensQty;
     }
 
     public void waitForCartQuantityToBeUpdated(int quantityToBuy) {
 
         wait.until(driver -> {
-            String qtyText = getText(carQuantity_Locator).trim();
+            String qtyText = getText(cartQuantity_Locator).trim();
             return !qtyText.isEmpty() && Integer.parseInt(qtyText) == quantityToBuy;
         });
     }

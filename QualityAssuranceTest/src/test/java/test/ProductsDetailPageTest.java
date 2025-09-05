@@ -4,44 +4,45 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pages.HomePage;
 import pages.ProductsDetailPage;
 
 public class ProductsDetailPageTest extends BaseTest {
-
+    private static final Logger logger = LoggerFactory.getLogger(ProductsDetailPageTest.class);
     static HomePage homePage;
     static ProductsDetailPage productsDetailPage;
 
-    public ProductsDetailPageTest() {
-    }
 
-    @BeforeAll
-   static void initPage(){
+  @BeforeAll
+   static void initPageObjects(){
         homePage = new HomePage(driver);
         productsDetailPage = new ProductsDetailPage(driver);
-        homePage.ClickOnProductLink(2);
+        homePage.ClickOnProductLink(3);
 
     }
         //Test 1 - Verify title of product
         // Is present, text not null
+
     @Test
-        void VerifyTitleIsPresent() {
-        String current_title = productsDetailPage.getProductTitle();
-        System.out.println("product title: " + current_title);
-        Assertions.assertFalse(current_title.isEmpty(), "Product title is not present");
+    public void verifyTitleIsPresent() {
+        String currentTitle = productsDetailPage.getProductTitle();
+        System.out.println("Product Title: " + currentTitle);
+        Assertions.assertFalse(currentTitle.isEmpty(),"Product title is not present");
     }
-        // Test 1.2 - Verify price of product
-        // Is present, text not null
-        @Test
-        void VerifyProductPriceIsPresent(){
-            String current_price = productsDetailPage.getProductPrice();
-            System.out.println("product price:" + current_price);
-            Assertions.assertFalse(current_price.isEmpty(), "Product price is not present");
-        }
+
+
+    @Test
+    public void verifyProductPriceIsPresent() {
+        String currentPrice = productsDetailPage.getProductPrice();
+        System.out.println("Product Price: " + currentPrice);
+        Assertions.assertFalse(currentPrice.isEmpty(),"Product Price is not present");
+    }
 
         // Add product Cart
         @Test
-    void AddProductToCart(){
+        public void AddProductToCart(){
         // setup test data
         int quantityToBy = 2;
         String sizeToSelect = "4";
@@ -51,7 +52,8 @@ public class ProductsDetailPageTest extends BaseTest {
         System.out.println("initialCarQty: " + initialCartQty);
 
         //Select size
-        productsDetailPage.selectSize( sizeToSelect);
+         productsDetailPage.selectSize( sizeToSelect);
+
 
         //Type quantity
         productsDetailPage.typeQuantity(quantityToBy);
@@ -79,7 +81,7 @@ public class ProductsDetailPageTest extends BaseTest {
 
    @Test
    @DisplayName("Story#86ab4r2f1 - Negative Scenario for Size")
-    void verifyProductCantBeAddedIfSizeNotSelected() {
+   public void verifyProductCantBeAddedIfSizeNotSelected() {
 
         //setup test data
         int quantityToBuy = 2;
@@ -105,10 +107,10 @@ public class ProductsDetailPageTest extends BaseTest {
     //Test Negativo para la cantidad
     @Test
     @DisplayName("Story#86ab4r2f1 - Negative Scenario for Quantity")
-    void verifyProductCantBeAddedIfQtyIsWrong() {
+    public void verifyProductCantBeAddedIfQtyIsWrong() {
         //setup test data
         int quantityToBuy = 0;
-        String sizeToSelect = "4";
+        String sizeToSelect = "2";
 
         //Select size
         productsDetailPage.selectSize(sizeToSelect);

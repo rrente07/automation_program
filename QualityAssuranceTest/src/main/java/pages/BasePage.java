@@ -1,14 +1,14 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import config.DriverManager;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 
 /**
  * BasePage provides common Selenium WebDriver actions and utilities
@@ -18,16 +18,13 @@ public class BasePage {
     WebDriver driver; //declare objet the type Webdriver
     WebDriverWait wait; //declare objet the type wait
 
-    private static final int TIMEOUT = 20;
+    private static final int TIMEOUT = 10;
 
 
-    /**
-     * Constructor initializes WebDriver and WebDriverWait.
-     *
-     * @param driver WebDriver instance
-     */
-    public BasePage(WebDriver driver) {
-        this.driver = driver;
+       //Constructor initializes WebDriver and WebDriverWait.
+
+    public BasePage() {
+        this.driver = DriverManager.getDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT));
     }
 
@@ -69,24 +66,19 @@ public class BasePage {
      *
      * @param locator By locator
      */
-    public void ScrollIntoViewAndClick(By locator) {
-        waitForElementToBePresent(locator);
+    public void scrollIntoViewAndClick(By locator){
+        waitForElementToBeClickable(locator);
         WebElement element = findElement(locator);
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView()", element);
-        js.executeScript("arguments[0].click()", element);
+        js.executeScript("arguments[0].scrollIntoView()",element);
+        js.executeScript("arguments[0].click()",element);
     }
 
-    /**
-     * Scrolls to a web element and clicks it using JavaScript.
-     *
-     * @param element WebElement to interact with
-     */
-    public void ScrollIntoViewAndClick(WebElement element) {
-        //wait
+    public void scrollIntoViewAndClick(WebElement element){
+        waitForElementToBeClickable(element);
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView()", element);
-        js.executeScript("arguments[0].click()", element);
+        js.executeScript("arguments[0].scrollIntoView()",element);
+        js.executeScript("arguments[0].click()",element);
     }
 
     /**
@@ -140,18 +132,16 @@ public class BasePage {
      *
      * @param locator By locator
      */
-    public void waitForElementToBePresent(By locator) {
+    public void waitForElementToBePresent(By locator){
         wait.until(ExpectedConditions.presenceOfElementLocated(locator));
-
     }
-
 
     /**
      * Waits for a web element found by locator to be clickable.
      *
      * @param locator By locator
      */
-    public void waitforElementToBeClickable(By locator) {
+    public void waitForElementToBeClickable(By locator) {
         wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
 
@@ -160,11 +150,28 @@ public class BasePage {
      *
      * @param element WebElement
      */
-    public void waitforElementToBeClickable(WebElement element) {
+    public void waitForElementToBeClickable(WebElement element) {
         wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
-    /**
+
+
+    public void waitForNewWindow(){
+        wait.until((ExpectedCondition <Boolean>)
+                d -> d!=null && d.getWindowHandles().size()>1);
+    }
+
+    //Wait for the element go away
+    public void waitForElementGoAway(By locator) {
+        try {
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
+        } catch (Exception e){
+            if( IsDisplayed(locator))
+                wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
+        }
+    }
+
+     /**
      * Submits a form using a web element found by locator.
      *
      * @param locator By locator
@@ -180,7 +187,7 @@ public class BasePage {
      * @param locator By locator
      */
     public void scrollIntoView(By locator) {
-        waitforElementToBeClickable(locator);
+        waitForElementToBeClickable(locator);
         WebElement element = findElement(locator);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView()", element);
@@ -191,26 +198,20 @@ public class BasePage {
      * @param element WebElement
      */
     public void scrollIntoView(WebElement element) {
-        waitforElementToBeClickable(element);
+        waitForElementToBeClickable(element);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView()", element);
     }
-    //Wait for the element go away
-    public void waitForElementGoAway(By locator) {
-        try {
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
-        } catch (Exception e){
-           if( IsDisplayed(locator))
-            wait.until(ExpectedConditions.invisibilityOfElementLocated(locator));
-        }
-    }
 
-// Test the JavaScript
+
+    // Method who use JavaScriptExecutor
+
 //Scroll to the bottom of the page
 public void scrollToBottom(){
     JavascriptExecutor js = (JavascriptExecutor) driver;
     js.executeScript("window.scrollTo(0,document.body.scrollHeight);");
 }
+
 
 //Scroll to the bottom of the page
 
@@ -224,9 +225,69 @@ public void scrollToTop(){
         uploadElement.sendKeys(filePath);
     }
 
+    public void switchToNewWindow(String OriginalHandle){
+       //Waiting for a new window open
+        waitForNewWindow();
+        //Saving all windows handles
+Set<String> allWindows = driver.getWindowHandles();
+// iterating through all the Windows handle
+for (String handle : allWindows){
+    System.out.println("Handle" + handle);
+    //If handle different the original window handle we switch to that new window
+    if (!handle.equals(OriginalHandle))
+        driver.switchTo().window(handle);
+}
+    }
 
+    // Select a checkbox if not already selected
+    public void selectCheckbox(By locator) {
+        try {
+            waitForElementToBeClickable(locator);
+            WebElement checkbox = driver.findElement(locator);
+            scrollIntoView(checkbox);
+            if (!checkbox.isSelected()) {
+                checkbox.click();
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to select checkbox: " + e.getMessage(), e);
+        }
 
+    }
 
+    public void waitForAlertToBePresent(){
+        wait.until(ExpectedConditions.alertIsPresent());
+    }
+
+            //Method to working with the alerts
+//Selenium have a class alert that permit to interact with the alert
+    //Accept the alert
+    public void acceptAlert(){
+        waitForAlertToBePresent();
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+    }
+    //Dismiss the alert
+    public void dismissAlert(){
+        waitForAlertToBePresent();
+        Alert alert = driver.switchTo().alert();
+        alert.dismiss();
+    }
+
+//Send text to the alert
+    public void sendKeysToAlert(String msg){
+        waitForAlertToBePresent();
+        Alert alert = driver.switchTo().alert();
+        alert.sendKeys(msg);
+        alert.accept();
+    }
+
+  //To get the text from the alert
+    public String getAlertText(){
+        waitForAlertToBePresent();
+        Alert alert = driver.switchTo().alert();
+        return alert.getText();
+    }
 
 
 }
+

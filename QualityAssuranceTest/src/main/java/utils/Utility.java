@@ -1,9 +1,11 @@
 package utils;
 
-import data.Product;
 import org.openqa.selenium.WebElement;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 
 public class Utility {
 
@@ -25,6 +27,7 @@ public class Utility {
     }
 
     public static double extractPriceFromText(String rawPriceText){
+
         System.out.println("Raw price text:" + rawPriceText);
 
         //Keeping only numbers and dots. Replacing the rest with space
@@ -33,27 +36,9 @@ public class Utility {
         //Taking the first number
         String firstNumber = cleanedPrice.split("\\s+")[0];
         System.out.println("firstNumber: "+firstNumber);
+
         return Double.valueOf(firstNumber);
 
-    }
-
-    public static boolean waitForNewFile(File folder, int timeoutInSeconds, int originalFileCount) {
-        System.out.println("originalFileCount:"+originalFileCount);
-        int elapsed = 0;
-        while (elapsed < timeoutInSeconds) {
-            File[] files = folder.listFiles();
-            if (files != null && files.length > originalFileCount) {
-                System.out.println("new file count:"+files.length);
-                return true; // New file appeared
-            }
-            try {
-                Thread.sleep(1000); // poll every 1 second
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            elapsed++;
-        }
-        return false; // timeout reached
     }
 
     public static void clearDownloadFolder(String downloadPath){
@@ -72,6 +57,47 @@ public class Utility {
             }
         }
 
-    }}
+    }
 
+    public static boolean waitForNewFile(File folder, int timeoutInSeconds, int originalFileCount) {
+
+        System.out.println("originalFileCount:"+originalFileCount);
+        int elapsed = 0;
+        while (elapsed < timeoutInSeconds) {
+            File[] files = folder.listFiles();
+            if (files != null && files.length > originalFileCount) {
+                System.out.println("new file count:"+files.length);
+                return true; // New file appeared
+            }
+            try {
+                Thread.sleep(1000); // poll every 1 second
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            elapsed++;
+        }
+        return false; // timeout reached
+    }
+
+    public static boolean compareDates(String date1, String format1,String date2, String format2){
+
+        try {
+            //"MM/dd/yyyy"   "dd/MM/yyyy"
+            DateTimeFormatter date1Formatter = DateTimeFormatter.ofPattern(format1);
+            LocalDate date1LocalDate = LocalDate.parse(date1,date1Formatter);
+
+            //"yyyy-MM-dd" "yyyy-dd-MM"
+            DateTimeFormatter date2Formatter = DateTimeFormatter.ofPattern(format2);
+            LocalDate date2LocalDate = LocalDate.parse(date2, date2Formatter);
+
+            return date1LocalDate.equals(date2LocalDate);
+        }catch (Exception e){
+            System.out.println("Error parsing dates: "+e.getMessage());
+            return false;
+        }
+
+    }
+
+
+}
 
