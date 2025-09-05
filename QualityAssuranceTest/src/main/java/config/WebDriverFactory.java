@@ -7,31 +7,47 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.util.HashMap;
 import java.util.Map;
+public class WebDriverFactory{
+public static WebDriver createDriver(BrowserType type){
 
-public class WebDriverFactory {
-//Create the driver for the type of user I am used
-    public static WebDriver CreateDriver(BrowserType type){
-        WebDriver driver;
-        switch(type){
-            //Initiate Driver the type FirefoxDriver
-            case FIREFOX : driver = new FirefoxDriver();
+    WebDriver driver;
+
+    switch (type){
+        case FIREFOX :
+            //we set up the configurations
+            driver = new FirefoxDriver();
             break;
-            case CRHOME : driver= new ChromeDriver();
-            default :
-                // Initiate Chrome with arguments add --start-Maximized start with navigator maximize
-                ChromeOptions options = new ChromeOptions();
+        case CHROME:
 
-                Map<String,Object> prefs = new HashMap<>();
-                prefs.put("download.default_directory", config.Configuration.DOWNLOAD_PATH);
-                prefs.put("download.prompt_for_download",false);
-                prefs.put("safebrowsing.enabled",true);
+        default:
+            ChromeOptions options = new ChromeOptions();
 
-                options.setExperimentalOption("prefs",prefs);
+            Map<String,Object> prefs = new HashMap<>();
+            prefs.put("download.default_directory", Configuration.DOWNLOAD_PATH);
+            prefs.put("download.prompt_for_download",false);
+            prefs.put("safebrowsing.enabled",true);
+            options.setExperimentalOption("prefs",prefs);
 
-                options.addArguments("--start-maximized");
-                driver = new ChromeDriver(options);
-                break;
-        }
-        return driver;
+            // Detecta si estamos corriendo en Jenkins (entorno headless)
+            boolean isJenkins = System.getenv("JENKINS_HOME") != null;
+
+            if(isJenkins){
+                options.addArguments("--headless=new");           // usa "new" para la nueva implementación de headless
+                options.addArguments("--no-sandbox");             // recomendado para entornos Linux sin GUI
+                options.addArguments("--disable-dev-shm-usage");  // evita errores por recursos compartidos
+                options.addArguments("--window-size=1920,1080");  // asegura tamaño suficiente para tests visuales
+                options.addArguments("--remote-allow-origins=*"); // si ves errores con políticas de seguridad
+            }else{
+                options.addArguments("--start-maximized"); // útil en ejecución local
+            }
+
+            driver = new ChromeDriver(options);
+            break;
+
     }
+
+    DriverManager.setDriver(driver);
+    return driver;
+
+}
 }

@@ -2,12 +2,14 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AppointmentsPage extends BasePage {
-
+    private static final Logger logger = LoggerFactory.getLogger(AppointmentsPage.class);
     //Constructor
     public AppointmentsPage(WebDriver driver) {
-        super(driver);
+        super();
     }
 
     By textAppointmentHeader_Locator = By.cssSelector("div.sqsrte-scaled-text-container h2");

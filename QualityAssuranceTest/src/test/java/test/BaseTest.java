@@ -1,6 +1,7 @@
 package test;
 
 import config.BrowserType;
+import config.DriverManager;
 import config.WebDriverFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -12,12 +13,13 @@ public class BaseTest {
 
     @BeforeAll
     static void beforeAll() {
-        driver = WebDriverFactory.CreateDriver(BrowserType.CRHOME);
+        driver = WebDriverFactory.createDriver(BrowserType.CRHOME);
         driver.get("https://www.qualitystream-practice.com/");
     }
 
     @AfterAll
     static void afterAll() {
-        driver.quit();
+
+        DriverManager.quitDriver();
     }
 }

@@ -16,7 +16,7 @@ public class RelativeLocatorsTest extends BaseTest {
     @BeforeAll
     static void InitPage(){
 homePage = new HomePage(driver);
-homePage.ClickOnWebElementTestLink();
+homePage.ClickOnWebElementLink();
     }
 
  /*
