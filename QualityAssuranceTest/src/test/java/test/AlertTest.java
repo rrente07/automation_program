@@ -3,6 +3,7 @@ package test;
 import listeners.ExtentReportExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import pages.WebElementPage;
 import static org.junit.jupiter.api.Assertions.fail;
 import static test.BaseTest.driver;
 @ExtendWith(ExtentReportExtension.class)
+@Tag("AlertTest_Regression")
 public class AlertTest extends BaseTest{
 
     private static final Logger logger = LoggerFactory.getLogger(AlertTest.class);

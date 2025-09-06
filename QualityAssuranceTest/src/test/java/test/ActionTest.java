@@ -1,8 +1,11 @@
 package test;
 
+import listeners.ExtentReportExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,8 +13,10 @@ import pages.ActionPages;
 import pages.HomePage;
 import pages.WebElementPage;
 
-public class ActionTest extends BaseTest{
 
+@ExtendWith(ExtentReportExtension.class)
+@Tag("AlertTest_Regression")
+public class ActionTest extends BaseTest{
 private static final Logger logger = LoggerFactory.getLogger(ActionTest.class);
 
     static HomePage homePage;
