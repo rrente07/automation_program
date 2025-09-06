@@ -23,8 +23,10 @@ pipeline {
 
     post {
         always {
-            junit 'QualityAssuranceTest/target/surefire-reports/*.html'
+            junit 'target/surefire-reports/*.xml'
              archiveArtifacts artifacts: 'reports/**.html', fingerprint: true
+             archiveArtifacts artifacts: 'QualityAssuranceTest/target/screenshots/*.png', allowEmptyArchive: true
+             archiveArtifacts artifacts: 'QualityAssuranceTest/target/reports/*.html', allowEmptyArchive: true
 
              publishHTML([
                          reportDir: 'reports',
