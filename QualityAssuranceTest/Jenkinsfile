@@ -23,7 +23,7 @@ pipeline {
 
     post {
         always {
-            junit junit 'QualityAssuranceTest/target/surefire-reports/*.xml'
+            junit 'QualityAssuranceTest/target/surefire-reports/*.xml'
              archiveArtifacts artifacts: 'reports/**.html', fingerprint: true
              archiveArtifacts artifacts: 'QualityAssuranceTest/target/screenshots/*.png', allowEmptyArchive: true
              archiveArtifacts artifacts: 'QualityAssuranceTest/target/reports/*.html', allowEmptyArchive: true
