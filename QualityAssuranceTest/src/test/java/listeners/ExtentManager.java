@@ -30,7 +30,7 @@ public static ExtentReports createInstance(String fileName) {
 }
 public static String getReportPathWithClassName(String className){
 String baseDir = System.getProperty("user_dir");
-String reportDir = baseDir +"/report";
+String reportDir = baseDir +"/reports";
 File directory = new File(reportDir);
 if (!directory.exists()){
     directory.mkdir();
