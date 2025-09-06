@@ -101,7 +101,7 @@
                 <configuration>
                     <groups>
                         Action_Regression,
-                        CreditCards_Regression
+                        CreditCards_Regression,
                         AlertTest_Regression
                     </groups>
                 </configuration>
