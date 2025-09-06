@@ -1,6 +1,7 @@
 package test;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import pages.HomePage;
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,6 +15,7 @@ homePage = new HomePage(driver);
     }
 
     @Test
+    @Tag("AlertTest_Regression")
     void verifyYtbIconHeader() {
         boolean isYoutubeIconPresent = homePage.IsHeaderYtbIconDisplayed();
         assertTrue(isYoutubeIconPresent, "The Youtube Icon is not Present in the Header:");
