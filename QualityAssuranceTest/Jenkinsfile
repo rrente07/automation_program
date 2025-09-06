@@ -15,8 +15,9 @@ pipeline {
 
         stage('Build & Test') {
             steps {
+            dir('QualityAssuranceTest') {
                 bat 'mvn clean test -Dgroups="Action_Regression,CreditCards_Regression,AlertTest_Regression"'
-            }
+            }}
         }
     }
 
