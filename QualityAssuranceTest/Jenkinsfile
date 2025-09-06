@@ -24,16 +24,14 @@ pipeline {
     post {
         always {
             junit 'QualityAssuranceTest/target/surefire-reports/*.xml'
-             archiveArtifacts artifacts: 'QualityAssuranceTest/reports/**/*.html', fingerprint: true
-
-
-             publishHTML([
-                         reportDir: 'QualityAssuranceTest/reports',
-                         reportFiles: '*.html',
-                         reportName: 'Extent Report',
-                         keepAll: true,
-                         alwaysLinkToLastBuild: true,
-                         allowMissing: false
+                    archiveArtifacts artifacts: 'QualityAssuranceTest/reports/*.html', fingerprint: true
+                    publishHTML([
+                        reportDir: 'QualityAssuranceTest/reports',
+                        reportFiles: '*.html',
+                        reportName: 'Extent Report',
+                        keepAll: true,
+                        alwaysLinkToLastBuild: true,
+                        allowMissing: false
                      ])
         }
     }
