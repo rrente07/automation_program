@@ -1,8 +1,11 @@
 package test;
 
+import listeners.ExtentReportExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.slf4j.Logger;
@@ -10,6 +13,9 @@ import org.slf4j.LoggerFactory;
 import pages.QSCreditCardsPage;
 import pages.HomePage;
 
+
+@ExtendWith(ExtentReportExtension.class)
+@Tag("CreditCards_Regression")
     public class QSCreditCardTest extends BaseTest{
     private static final Logger logger = LoggerFactory.getLogger(QSCreditCardTest.class);
     private final String creditCardsCSVFile = "/files/creditCards.csv";

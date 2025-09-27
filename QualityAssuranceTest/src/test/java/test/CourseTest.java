@@ -2,9 +2,12 @@ package tests;
 
 import config.Configuration;
 import data.Student;
+import listeners.ExtentReportExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.slf4j.Logger;
@@ -17,6 +20,8 @@ import utils.Utility;
 
 import java.io.File;
 
+@ExtendWith(ExtentReportExtension.class)
+@Tag("AlertTest_Regression")
 public class CourseTest extends BaseTest {
     private static final Logger logger = LoggerFactory.getLogger(CourseTest.class);
     static HomePage homePage;

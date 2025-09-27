@@ -10,31 +10,21 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Set;
 
-/**
- * BasePage provides common Selenium WebDriver actions and utilities
- */
-public class BasePage {
 
+    //BasePage provides common Selenium WebDriver actions and utilities
+    public class BasePage {
     WebDriver driver; //declare objet the type Webdriver
     WebDriverWait wait; //declare objet the type wait
+    private static final int TIMEOUT = 10; // maximum wait time (10 seconds)
 
-    private static final int TIMEOUT = 10;
-
-
-       //Constructor initializes WebDriver and WebDriverWait.
-
-    public BasePage() {
+        //Constructor initializes WebDriver and WebDriverWait.
+        public BasePage() {
         this.driver = DriverManager.getDriver();
         wait = new WebDriverWait(driver, Duration.ofSeconds(TIMEOUT));
     }
 
-    /**
-     * Finds a web element by locator, waiting for its presence.
-     *
-     * @param locator By locator
-     * @return WebElement found
-     */
-    public WebElement findElement(By locator) {
+      //Finds a web element by locator, waiting for its presence.
+      public WebElement findElement(By locator) {
         //Waiting for the element to be present
         waitForElementToBePresent(locator);
         return driver.findElement(locator);
@@ -42,7 +32,6 @@ public class BasePage {
 
     /**
      * Finds a list of web elements by locator, waiting for their presence.
-     *
      * @param locator By locator
      * @return List of WebElements found
      */
@@ -53,7 +42,6 @@ public class BasePage {
 
     /**
      * Clicks on a web element found by locator, waiting for its presence.
-     *
      * @param locator By locator
      */
     public void click(By locator) {
@@ -63,7 +51,6 @@ public class BasePage {
 
     /**
      * Scrolls to a web element by locator and clicks it using JavaScript.
-     *
      * @param locator By locator
      */
     public void scrollIntoViewAndClick(By locator){
@@ -83,7 +70,6 @@ public class BasePage {
 
     /**
      * Types text into a web element found by locator, clearing it first.
-     *
      * @param locator By locator
      * @param text    Text to type
      */
@@ -95,7 +81,6 @@ public class BasePage {
 
     /**
      * Gets the text of a web element found by locator.
-     *
      * @param locator By locator
      * @return Text of the element
      */
@@ -105,7 +90,6 @@ public class BasePage {
 
     /**
      * Gets the text of a given web element.
-     *
      * @param element WebElement
      * @return Text of the element
      */
@@ -115,7 +99,6 @@ public class BasePage {
 
     /**
      * Checks if a web element found by locator is displayed.
-     *
      * @param locator By locator
      * @return true if displayed, false otherwise
      */
@@ -129,7 +112,6 @@ public class BasePage {
 
     /**
      * Waits for a web element to be present in the DOM.
-     *
      * @param locator By locator
      */
     public void waitForElementToBePresent(By locator){
@@ -202,7 +184,6 @@ public class BasePage {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView()", element);
     }
-
 
     // Method who use JavaScriptExecutor
 
@@ -289,5 +270,16 @@ for (String handle : allWindows){
     }
 
 
-}
+        public boolean isElementVisible(By locator) {
+            try {
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+                WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+                return element.isDisplayed();
+            } catch (TimeoutException e) {
+                return false;
+            }
+        }
+
+
+    }
 
