@@ -43,18 +43,15 @@ public class HomePage extends BasePage {
 
      //Footer
     /** Locator for the footer logo */
-    By footerLogo_Locator = By.xpath("//footer//img[contains(@src='website_logo_transparent_background.png'] ");
+    By footerLogo_Locator = By.xpath("//footer//img[contains(@src,'website_logo_transparent_background.png')]");
 
     //Products
     /** Locator for the list of product links Changed 09-05-25 */
     By productsLinksList_Locator = By.cssSelector("a.product-list-item-link");
     /** Locator for the list of product titles */
-    By productTitleList_Locator = By.cssSelector("div.grid-title");
+    By productTitleList_Locator = By.xpath("//section[contains(@class,'product-list-item-meta')]//div[contains(@class,'product-list-item-title') and normalize-space()]\n");
     /** Locator for the list of product prices */
-    By productPriceList_Locator = By.cssSelector("div.grid-prices");
-
-
-
+    By productPriceList_Locator = By.xpath("//section[contains(@class,'product-list-item-meta')]//div[contains(@class,'product-list-item-price') and normalize-space()]\n");
 
     /** Clicks the course page link in the header */
     public void ClickOnCoursePageLink(){ click(coursePageLink_Locator);}
@@ -94,15 +91,19 @@ public boolean AreFilterPresent(){
         System.out.println("Is the Link Present?" + bottomLinkIsPresent);
         return  TopLinkIspresent && bottomLinkIsPresent;
 }
+
+
     /**
      * Checks if the footer logo is present
      * @return true if present, false otherwise
      */
 public boolean IsLogoPresent(){
         boolean Footerlogo_IsPresent = IsDisplayed(footerLogo_Locator);
-        System.out.println("The button link is Displayed" + Footerlogo_IsPresent);
+        System.out.println("The button link is Displayed: " + Footerlogo_IsPresent);
         return Footerlogo_IsPresent;
 }
+
+
     /**
      * Retrieves the list of products with their titles and prices
      * @return List of Product objects

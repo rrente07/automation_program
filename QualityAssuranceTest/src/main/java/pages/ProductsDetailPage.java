@@ -22,7 +22,7 @@ public class ProductsDetailPage extends BasePage {
     // Locator for the product element
     By productTitle_Locator = By.cssSelector("h1.product-title");
     // Locator for the product price element
-    By productPrice_Locator = By.className("product-price-value");
+    By productPrice_Locator = By.cssSelector("div.product-price-value");
     // Locator for the size selection dropdown
     //Modificado hoy 09-05-25
     By selectSize_Locator = By.name("variant-option-Size-select");

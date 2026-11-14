@@ -36,9 +36,7 @@ public class Utility {
         //Taking the first number
         String firstNumber = cleanedPrice.split("\\s+")[0];
         System.out.println("firstNumber: "+firstNumber);
-
         return Double.valueOf(firstNumber);
-
     }
 
     public static void clearDownloadFolder(String downloadPath){

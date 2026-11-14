@@ -28,7 +28,7 @@ public static WebDriver createDriver(BrowserType type){
             prefs.put("safebrowsing.enabled",true);
             options.setExperimentalOption("prefs",prefs);
 
-            // Detecta si estamos corriendo en Jenkins (entorno headless)
+            // Detect if we are running in Jenkins (enviroments headless)
             boolean isJenkins = System.getenv("JENKINS_HOME") != null;
 
             if(isJenkins){

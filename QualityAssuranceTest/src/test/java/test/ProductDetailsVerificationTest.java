@@ -1,16 +1,20 @@
 package test;
 
 import data.Product;
+import listeners.ExtentReportExtension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pages.HomePage;
 import pages.ProductsDetailPage;
 
 import java.util.List;
-
+@ExtendWith(ExtentReportExtension.class)
+@Tag("Products_Regression")
 public class ProductDetailsVerificationTest extends BaseTest {
     private static final Logger logger = LoggerFactory.getLogger(ProductDetailsVerificationTest.class);
         static HomePage homePage;
@@ -51,5 +55,8 @@ public class ProductDetailsVerificationTest extends BaseTest {
                 "\n --> currentPrice: "+currentPrice);
         Assertions.assertEquals(expectedPrice,currentPrice,"Selected Product Price is not the expected");
 
-    }
+         }
+
+
+
 }

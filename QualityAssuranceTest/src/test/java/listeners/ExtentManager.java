@@ -25,7 +25,7 @@ public static ExtentReports createInstance(String fileName) {
     htmlReporter.config().setReportName(fileName);
         extent = new ExtentReports();
         extent.attachReporter(htmlReporter);
-        extent.setSystemInfo("Organization", "QualityStream");
+        extent.setSystemInfo("Organization", "RosaTest");
         return extent;
 }
 public static String getReportPathWithClassName(String className){
