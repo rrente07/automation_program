@@ -15,7 +15,7 @@ import pages.WebElementPage;
 
 
 @ExtendWith(ExtentReportExtension.class)
-@Tag("AlertTest_Regression")
+@Tag("Action_Regression")
 public class ActionTest extends BaseTest{
 private static final Logger logger = LoggerFactory.getLogger(ActionTest.class);
 
