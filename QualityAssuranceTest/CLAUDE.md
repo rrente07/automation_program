@@ -14,7 +14,7 @@ There is no Maven wrapper script checked in; use a local `mvn` (Jenkins uses Mav
 mvn clean test                                   # run the regression suites
 mvn test -Dtest=QSCreditCardTest                 # single class
 mvn test -Dtest=QSCreditCardTest#areCreditCardsImagesPresent   # single method
-mvn clean test -Dgroups="Action_Regression,CreditCards_Regression,AlertTest_Regression"  # what Jenkins runs
+mvn clean test -Dgroups="Action_Regression,CreditCards_Regression,AlertTest_Regression"  # the command Jenkins runs (see gotcha below)
 ```
 
 **Tag filtering gotcha:** `pom.xml` hardcodes surefire `<groups>` to `Action_Regression, CreditCards_Regression, AlertTest_Regression, Products_Regression`. Only classes/methods carrying one of these `@Tag`s run under Maven — untagged classes (everything in `clase1/`, `clase2/`, most of `HomeTest`) are skipped even when targeted with `-Dtest`. Because the groups are set explicitly in the POM, a `-Dgroups` on the command line may not override them; edit the POM (or run from the IDE) to run untagged tests. Note that many unrelated classes reuse the `AlertTest_Regression` tag.
@@ -48,10 +48,20 @@ How the tests are written:
 - Page objects are created in a `static @BeforeAll` named `initPage()` or `initPageObjects()`. JUnit runs it after `BaseTest.beforeAll()`, so the driver already exists. Navigation that every test in the class needs (for example, clicking the credit-cards link and entering the password) also goes in that method.
 - Because the whole class shares one browser session, each test starts on whatever page the previous test left open. Tests that change pages either navigate back themselves or depend on the order the tests run in; no class sets `@TestMethodOrder`.
 - Tests check results with `Assertions` and a failure message, and log through an SLF4J `Logger`.
-- Jenkins leaves out `Products_Regression`.
+- Jenkins passes a `-Dgroups` without `Products_Regression`, but because the POM sets `<groups>` explicitly that flag is probably ignored, so Jenkins likely runs the `Products_Regression` tests too.
 - A new test class should extend `BaseTest`, add `@ExtendWith(ExtentReportExtension.class)` so it appears in the reports, and use a tag that is in the POM's `<groups>`. Without such a tag, `mvn test` skips it.
 
+## User-story workflow (project skills)
+
+Three skills in `.claude/skills/` take a user story from plan to push. Every artifact for a story lives in `.claude/<STORY-ID>/`.
+
+1. `/test-plan [file|ID]` saves the story as `user-story.md` and writes `test-plan.md`, with test cases named `TC-<ID>-NN` and a decision for each case on whether it is automated or tested manually.
+2. `/automate-tests <ID>` writes page objects and tests that follow the patterns above, runs them, and writes `automation-summary.md`, which lists the files it touched and maps each test case to a test method.
+3. `/push-tests <ID>` first runs the `code-reviewer` subagent (`.claude/agents/code-reviewer.md`), saves its report as `code-review.md`, and stops if the report contains high-severity findings. It then creates a `test/<ID>-…` branch, commits only the files listed in the summary plus the story folder, and pushes. The user opens the PR and merges it.
+
 ## Gotchas
+
+- The git repository root is the parent folder (`D:\Quality Assurance Automation Projects`), not this project. It also holds unrelated sibling projects, many untracked (`APIAutomationQS/`, `UI-automation-Playwright/`, …). Git paths are relative to the parent (`QualityAssuranceTest/...`), and you should never `git add -A` or `git add .` from the root; stage explicit paths.
 
 - Logging is configured in `src/test/resources/logback-test.xml`: root level `debug`, written to the console and appended to `logs/test-log.log`.
 - Screenshot and report-clearing paths use Windows `\\` separators; the Jenkins pipeline uses `bat` and runs from the parent repo directory with `dir('QualityAssuranceTest')`.
